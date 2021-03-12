@@ -25,9 +25,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double _hue = 360.0;
+  double _hue = 180.0;
   double _saturation = 0.5;
   double _lightness = 0.5;
+
+  void _onChangedHue(newValue) {
+    setState(() {
+      _hue = newValue;
+    });
+  }
+
+  void _onChangedSaturation(newValue) {
+    setState(() {
+      _saturation = newValue;
+    });
+  }
+
+  void _onChangedLightness(newValue) {
+    setState(() {
+      _lightness = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,18 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: EdgeInsets.all(10),
                     child: Text("Hue"),
                   ),
-                  Container(
-                    width: 270,
-                    child: Slider.adaptive(
-                      value: _hue,
-                      min: 0.0,
-                      max: 360.0,
-                      label: "$_hue",
-                      onChanged: (newHue) {
-                        setState(() => _hue = newHue);
-                      },
-                    ),
-                  ),
+                  Myslider(_hue, 360.0, _onChangedHue)
                 ],
               ),
               Row(
@@ -95,18 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: EdgeInsets.all(10),
                     child: Text("Saturation"),
                   ),
-                  Container(
-                    width: 270,
-                    child: Slider.adaptive(
-                      value: _saturation,
-                      min: 0.0,
-                      max: 1.0,
-                      label: "$_saturation",
-                      onChanged: (newSaturation) {
-                        setState(() => _saturation = newSaturation);
-                      },
-                    ),
-                  ),
+                  Myslider(_saturation, 1.0, _onChangedSaturation)
                 ],
               ),
               Row(
@@ -117,18 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: EdgeInsets.all(10),
                     child: Text("Lightness"),
                   ),
-                  Container(
-                    width: 270,
-                    child: Slider.adaptive(
-                      value: _lightness,
-                      min: 0.0,
-                      max: 1.0,
-                      label: "$_lightness",
-                      onChanged: (newSaturation) {
-                        setState(() => _lightness = newSaturation);
-                      },
-                    ),
-                  ),
+                  Myslider(_lightness, 1.0, _onChangedLightness)
                 ],
               ),
             ],
@@ -137,38 +122,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// class Myslider extends StatefulWidget {
-//   double hslItem;
-//   double maxValue;
-//   String label;
+class Myslider extends StatelessWidget {
+  final double hslItem;
+  final double maxValue;
+  final onChanged;
 
-//   Myslider(this.hslItem, this.label, this.maxValue);
+  Myslider(this.hslItem, this.maxValue, this.onChanged);
 
-//   @override
-//   _MysliderState createState() => _MysliderState();
-// }
-
-// class _MysliderState extends State<Myslider> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Text("${widget.label}"),
-//           Container(
-//             child: Slider.adaptive(
-//               value: widget.hslItem,
-//               min: 0.0,
-//               max: widget.maxValue,
-//               label: "${widget.hslItem}",
-//               onChanged: (newValue) {
-//                 setState(() => widget.hslItem = newValue);
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 250,
+      child: Slider.adaptive(
+        value: hslItem,
+        min: 0.0,
+        max: maxValue,
+        onChanged: (newValue) {
+          onChanged(newValue);
+        },
+      ),
+    );
+  }
+}
